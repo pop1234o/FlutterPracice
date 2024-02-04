@@ -290,13 +290,14 @@ void a10() {
   switch (obj) {
 // List pattern [a, b] matches obj first if obj is a list with two fields,
 // then if its fields match the constant subpatterns 'a' and 'b'.
+  //case [a, b]: 是两个元素数组， 而且元素类型也一样
     case [a, b]:
       print('$a, $b');
   }
 
   var (a1, b1) = ('left', 'right');
   (b1, a1) = (a1, b1); // Swap.
-  print('$a $b'); // Prints "right left".
+  print('$a1 $b1'); // Prints "right left".
 
   //=================
   var obj1 = 1;
@@ -377,7 +378,7 @@ void a11(String? maybeString) {
   switch (maybeString) {
     case var s?:
     // 's' has type non-nullable String here.
-      print(s);
+      print(s.isEmpty);
   }
 
   List<String?> row = ['user', null];
@@ -451,16 +452,12 @@ void a13() {
 }
 
 //直接调用
-void printElement(int element) {
-  print(element);
-}
 
 void a14() {
   var list = [1, 2, 3];
 
 // Pass printElement as a parameter.
   list.forEach(printElement);
-
 
   //匿名函数定义
   var loudify = (msg) => '!!! ${msg.toUpperCase()} !!!';
@@ -473,6 +470,10 @@ void a14() {
     print('$item: ${item.length}');
   });
 }
+void printElement(int element) {
+  print(element);
+}
+
 
 // Returns a function that adds [addBy] to the
 /// function's argument.
@@ -522,8 +523,10 @@ void a16() {
   // for (final Candidate(:name, :yearsExperience) in candidates) {
   //   print('$name has $yearsExperience of experience.');
   // }
-  var pair = [1, 2];
-  if (pair case [int x, int y]);
+  var pair = [1, 2]; //匹配两个 int  ，用is还不行，is是类型匹配，不是模式匹配
+  if (pair case [int x, int y]){
+    print(x);
+  }
 
   var command = "";
   switch (command) {

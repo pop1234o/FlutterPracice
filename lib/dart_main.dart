@@ -203,6 +203,7 @@ Future<void> createDescriptions(Iterable<String> objects) async {
 Stream<String> report(Spacecraft craft, Iterable<String> objects) async* {
   for (final object in objects) {
     await Future.delayed(oneSecond);
+    //想stream中插入一个数据
     yield '${craft.name} flies by $object';
   }
 }
