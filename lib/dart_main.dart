@@ -81,8 +81,7 @@ enum Planet {
 
   /// A constant generating constructor
   /// required 代表必须传入
-  const Planet(
-      {required this.planetType, required this.moons, required this.hasRings});
+  const Planet({required this.planetType, required this.moons, required this.hasRings});
 
   /// All instance variables are final
   final PlanetType planetType;
@@ -90,8 +89,7 @@ enum Planet {
   final bool hasRings;
 
   /// Enhanced enums support getters and other methods
-  bool get isGiant =>
-      planetType == PlanetType.gas || planetType == PlanetType.ice;
+  bool get isGiant => planetType == PlanetType.gas || planetType == PlanetType.ice;
 }
 
 void a2() {
@@ -129,7 +127,7 @@ void a3() {
 }
 
 //所有的类都隐式定义成了一个接口。因此，任意类都可以作为接口被实现。
-class MockSpaceship implements Spacecraft {
+class MockSpaceship implements Spacecraft, Piloted {
   @override
   DateTime? launchDate;
 
@@ -144,6 +142,14 @@ class MockSpaceship implements Spacecraft {
   @override
   // TODO: implement launchYear
   int? get launchYear => throw UnimplementedError();
+
+  @override
+  int astronauts = 0;
+
+  @override
+  void describeCrew() {
+    // TODO: implement describeCrew
+  }
 // ···
 }
 
@@ -182,8 +188,7 @@ Future<void> createDescriptions(Iterable<String> objects) async {
       var file = File('$object.txt');
       if (await file.exists()) {
         var modified = await file.lastModified();
-        print(
-            'File for $object already exists. It was modified on $modified.');
+        print('File for $object already exists. It was modified on $modified.');
         continue;
       }
       await file.create();
@@ -215,22 +220,3 @@ Future<void> describeFlybyObjects(List<String> flybyObjects) async {
     flybyObjects.clear();
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
