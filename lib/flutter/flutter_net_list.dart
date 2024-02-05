@@ -1,11 +1,7 @@
-
-
-
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const SampleApp());
@@ -13,6 +9,7 @@ void main() {
 
 class SampleApp extends StatelessWidget {
   const SampleApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,18 +38,35 @@ class _SampleAppPageState extends State<SampleAppPage> {
     loadData();
   }
 
+  Widget getBody() {
+    bool showLoadingDialog = widgets.isEmpty;
+    if (showLoadingDialog) {
+      return getProgressDialog();
+    } else {
+      return getListView();
+    }
+  }
+
+  Widget getProgressDialog() {
+    return const Center(child: CircularProgressIndicator());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sample App'),
       ),
-      body: ListView.builder(
-        itemCount: widgets.length,
-        itemBuilder: (context, position) {
-          return getRow(position);
-        },
-      ),
+      body: getBody(),
+    );
+  }
+
+  ListView getListView() {
+    return ListView.builder(
+      itemCount: widgets.length,
+      itemBuilder: (context, position) {
+        return getRow(position);
+      },
     );
   }
 
@@ -64,10 +78,10 @@ class _SampleAppPageState extends State<SampleAppPage> {
   }
 
   Future<void> loadData() async {
-    // var dataURL = Uri.parse('https://jsonplaceholder.typicode.com/posts');
-    // http.Response response = await http.get(dataURL);
+    var dataURL = Uri.parse('https://jsonplaceholder.typicode.com/posts');
+    http.Response response = await http.get(dataURL);
     setState(() {
-      // widgets = jsonDecode(response.body);
+      widgets = jsonDecode(response.body);
     });
   }
 }

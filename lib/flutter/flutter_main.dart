@@ -94,9 +94,19 @@
 
 // Navigator.of(context).pushNamed('/b');
 
+//再例如，你需要执行消耗 CPU 的计算密集型工作，那么你可以将其转移到一个 Isolate 上以避免阻塞事件循环
+// io 密集用async
 
+//http flutter pub add http
 
+//如果 Widget 不支持事件监听，将 Widget 包装进一个 GestureDetector 中并向 onTap 参数传入一个方法。
 
+//sp
+// Future<void> _incrementCounter() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   int counter = (prefs.getInt('counter') ?? 0) + 1;
+//   await prefs.setInt('counter', counter);
+// }
 
 
 

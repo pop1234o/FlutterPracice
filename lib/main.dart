@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'flutter/flutter_recycler.dart';
+
 void main() {
-  runApp(const MyApp());
+  // runApp(const MyApp());
+  runApp(const SampleApp());
+
 }
 
 class MyApp extends StatelessWidget {
