@@ -55,6 +55,7 @@ class _SampleAppPageState extends State<SampleAppPage> {
   }
 
   Widget getRow(int i) {
+    //包裹一个点击事件
     return GestureDetector(
       onTap: () {
         setState(() {
