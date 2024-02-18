@@ -63,7 +63,7 @@ Column _buildButtonColumn(Color color, IconData icon, String label) {
   );
 }
 
-Color color =  Colors.grey[500]
+Color color =  const Color(0x00ffffff);
 
 Widget buttonSection = Row(
   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
