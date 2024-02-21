@@ -98,7 +98,7 @@
 ==========一个容器中，根据不同状态展示不同控件，这个怎么实现比较优雅
 1.用visibility，根据状态来展示 ,Stack
 2.用 true ? widget1  : widget2 
-
+3.封装一个状态模式
 
 =====在Row中设置每个控件的间距，可以通过插入SizedBox或者使用Spacer来实现
 
@@ -107,18 +107,63 @@
 
 =====在Flutter中，Stack的宽度和高度通常由其内部的子Widget决定
 Container,SizedBox Positioned Align
-Stack(
-children: <Widget>[
-Positioned(
-left: 10,
-top: 10,
-width: 100, // 子Widget的宽度
-height: 100, // 子Widget的高度
-child: Container(color: Colors.red),
-),
-// 其他子Widget
-],
-)
+
+====图片点击实现
+GestureDetector + Image
+InkWell + Image
+IconButton 
+
+===在Stack中使用Center对Image进行居中时，如果直接将Image放在Center中可能不会生效，
+这是因为Image的实际大小可能受到图片内容的影响。为了确保Image能够正确居中，你可以先将Image放入一个固定大小的Container中，
+然后再用Center对这个Container进行居中。这样可以确保无论Image的实际大小如何，它都会被正确地居中显示
+
+
+====const
+1不变的UI：在Flutter中，许多UI组件是不会改变的，比如颜色、文本样式等。使用const来创建这些组件可以提高性能。 
+2配置和常量：任何不需要在运行时改变的值，都应该考虑使用const来定义。
+
+====声明式 UI
+https://flutter.cn/docs/get-started/flutter-for/declarative
+重新构建新的ui，而不是命令式的去修改属性
+
+=====定义函数
+final Widget Function(
+BuildContext context,
+T value,
+Widget? child,
+) builder;
+
+定义了一个叫builder的函数变量。
+
+======FutureBuilder和Provider
+FutureBuilder和Provider是Flutter中用于不同目的的两个概念，它们在应用的状态管理和数据流处理中扮演着不同的角色。
+FutureBuilder
+
+FutureBuilder是一个Flutter的Widget，它根据与Future的交互来构建自己的UI。它主要用于异步操作，比如网络请求或数据库查询。当你有一个返回Future的异步操作，并且你想在操作完成时更新UI，FutureBuilder就非常有用。
+
+- 用途：处理单个异步操作的结果，并根据这个异步操作的状态（等待、完成、错误）来构建UI。
+- 工作方式：你提供一个Future给FutureBuilder，并提供一个builder函数。这个builder函数根据Future的状态（等待、完成、错误）返回不同的Widget。
+  Provider
+
+Provider是一个流行的状态管理库，它使用了Flutter的InheritedWidget来在Widget树中传递数据。Provider旨在使状态的管理和组件之间的通信变得更简单、更高效。
+
+- 用途：在应用的不同部分之间共享数据和状态。它不仅限于异步数据，也适用于任何需要跨多个Widget共享的数据。
+- 工作方式：你在应用的顶层提供一个状态或数据对象，然后在Widget树的任何地方，你都可以读取或监听这个状态的变化。当状态改变时，所有使用这个状态的Widget都会自动重建。
+  区别
+
+- 目的不同：FutureBuilder主要用于处理单个异步操作并根据操作结果更新UI，而Provider用于在应用的不同部分之间共享数据和状态。
+- 使用场景不同：如果你只是需要处理一个异步操作并在完成时更新UI，使用FutureBuilder就足够了。如果你需要在多个Widget之间共享数据或状态，并且希望当数据改变时能够自动更新UI，那么Provider会是更好的选择。
+- 工作原理不同：FutureBuilder依赖于Future的状态来构建UI，而Provider通过InheritedWidget在Widget树中传递和监听数据或状态的变化。
+
+总的来说，FutureBuilder和Provider服务于Flutter应用中不同的需求，它们可以单独使用，也可以结合使用来构建高效、可维护的应用。
+
+
+==========数据传递
+跳转 Provider(create: (context) => entity, child: const Screen())
+var entity = Provider.of<data>(context);//initState后
+
+
+
 
 
 
