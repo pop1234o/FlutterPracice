@@ -66,10 +66,10 @@ const baz = []; // Equivalent to `const []`
 
 var visibility = true ? 'public' : 'private';
 
-// ??  就是 ?:  判空或者
+// ===============??  就是 ?:  判空或者
 String playerName(String? name) => name ?? 'Guest';
 
-// ..  省去多余代码  ?.
+// ============   .. 和 ..?    省去多余代码 .和 ?.
 var paint = Paint()
   ..color = Colors.black
   ..strokeCap = StrokeCap.round
@@ -105,6 +105,7 @@ multi-line strings like this one.
 var s = r'In a raw string, not even \n gets special treatment.';
 
 //================记录表达式========================
+//其实就是返回多个数据的时候，用这个，有点像java的Pair
 var record1 = ('first', a: 2, b: true, 'last');
 
 (int, int) swap((int, int) record) {
@@ -114,6 +115,10 @@ var record1 = ('first', a: 2, b: true, 'last');
 
 void a5() {
   var swap2 = swap((1, 2));
+  //记录表达式赋值
+  var a = swap2.$1;
+  var b = swap2.$2;
+  var (c, d) = swap2;
 }
 
 void a6() {
@@ -138,7 +143,7 @@ void a6() {
   print(point == color); // Prints 'true'.
 }
 
-//多结果返回
+//多结果返回  Map中dynamic动态的值
 // Returns multiple values in a record:
 (String, int) userInfo(Map<String, dynamic> json) {
   return (json['name'] as String, json['age'] as int);
@@ -205,7 +210,7 @@ void a8() {
     18: 'argon',
   };
 
-  //展开操作符  addall
+  //==========展开操作符 ...  addall
   var list11 = [1, 2, 3];
   var list22 = [0, ...list];
   assert(list22.length == 4);
@@ -250,7 +255,7 @@ T first<T>(List<T> ts) {
   return tmp;
 }
 
-//=================类型别名================
+//=================类型别名 typedef ，在函数中定义函数================
 
 typedef IntList = List<int>;
 
@@ -267,6 +272,21 @@ typedef Compare<T> = int Function(T a, T b);
 int sort(int a, int b) => a - b;
 
 void main1() {
+  //Use a function declaration rather than a variable assignment to bind a function to a name.
+  //使用函数定义
+  Compare<int> compare = (a, b) => a + b;
+  //直接函数名 ，参数列表，函数体
+  compare111(a, b) => a + b;
+  var c = compare111(1, 2);
+
+  Compare<int> compare222 = (a, b) {
+    return a + b;
+  };
+
+  compare333(a, b) {
+    return a + b;
+  }
+
   assert(sort is Compare<int>); // True!
 }
 
@@ -290,7 +310,7 @@ void a10() {
   switch (obj) {
 // List pattern [a, b] matches obj first if obj is a list with two fields,
 // then if its fields match the constant subpatterns 'a' and 'b'.
-  //case [a, b]: 是两个元素数组， 而且元素类型也一样
+    //case [a, b]: 是两个元素数组， 而且元素类型也一样
     case [a, b]:
       print('$a, $b');
   }
@@ -302,17 +322,17 @@ void a10() {
   //=================
   var obj1 = 1;
   switch (obj1) {
-  // Matches if 1 == obj.
+    // Matches if 1 == obj.
     case 1:
       print('one');
 
-  // Matches if the value of obj is between the
-  // constant values of 'first' and 'last'.
+    // Matches if the value of obj is between the
+    // constant values of 'first' and 'last'.
     case >= 1 && <= 5:
       print('in range');
 
-  // Matches if obj is a record with two fields,
-  // then assigns the fields to 'a' and 'b'.
+    // Matches if obj is a record with two fields,
+    // then assigns the fields to 'a' and 'b'.
     case (var a, var b):
       print('a = $a, b = $b');
 
@@ -325,12 +345,12 @@ void a10() {
 //     _ => false
 //   };
 
-  //=================for
+  //=================for in
   Map<String, int> hist = {
     'a': 23,
     'b': 100,
   };
-
+  //
   for (var MapEntry(key: key, value: count) in hist.entries) {
     print('$key occurred $count times');
   }
@@ -340,7 +360,7 @@ void a10() {
   }
 }
 
-//sealed
+//===========sealed
 sealed class Shape {}
 
 class Square implements Shape {
@@ -356,9 +376,7 @@ class Circle implements Shape {
 }
 
 double calculateArea(Shape shape) =>
-    switch (shape) {
-      Square(length: var l) => l * l, Circle(radius: var r) => 3.14 * r * r
-    };
+    switch (shape) { Square(length: var l) => l * l, Circle(radius: var r) => 3.14 * r * r };
 
 String asciiCharType(int char) {
   const space = 32;
@@ -377,14 +395,16 @@ String asciiCharType(int char) {
 void a11(String? maybeString) {
   switch (maybeString) {
     case var s?:
-    // 's' has type non-nullable String here.
+      // 's' has type non-nullable String here.
       print(s.isEmpty);
+    default:
+      print("");
   }
 
   List<String?> row = ['user', null];
   switch (row) {
     case ['user', var name!]: // ...
-    // 'name' is a non-nullable string here.
+      // 'name' is a non-nullable string here.
       print(name);
   }
 
@@ -395,13 +415,13 @@ void a11(String? maybeString) {
   // a.isOdd;//a可能是null
 
   switch ((1, 2)) {
-  // 'var a' and 'var b' are variable patterns that bind to 1 and 2, respectively.
+    // 'var a' and 'var b' are variable patterns that bind to 1 and 2, respectively.
     case (var a, var b): // ...
     // 'a' and 'b' are in scope in the case body.
   }
 
   switch ((1, 2)) {
-  // Does not match.
+    // Does not match.
     case (int a, String b): // ...
   }
   //简单来说就是模式匹配，匹配上了类型，就赋值。
@@ -470,12 +490,12 @@ void a14() {
     print('$item: ${item.length}');
   });
 }
+
 void printElement(int element) {
   print(element);
 }
 
-
-// Returns a function that adds [addBy] to the
+// ============ 返回函数类型   Returns a function that adds [addBy] to the
 /// function's argument.
 Function makeAdder(int addBy) {
   return (int i) => addBy + i;
@@ -491,26 +511,36 @@ void main3() {
   assert(add4(3) == 7);
 }
 
-//生成器函数
+//================生成器函数
 //When you need to lazily produce a sequence of values, consider using a generator function
 //处理一系列数据，返回给你List不高效，一个个返回比较好。
-//同步的
+//同步的，返回k
 Iterable<int> naturalsTo(int n) sync* {
   int k = 0;
-  while (k < n) yield k++;
+  while (k < n) {
+    yield k++;
+  }
+
 }
+
 //异步的
 Stream<int> asynchronousNaturalsTo(int n) async* {
   int k = 0;
-  while (k < n) yield k++;
+  while (k < n) {
+    yield k++;
+  }
 }
 
 void a15() {
   naturalsTo(5).forEach((element) {
     //一个个的接收，同步的
   });
+  //定义一个函数，参数也是函数类型
+  //Future<void> forEach(void action(T element))
+  //异步接收
+  asynchronousNaturalsTo(10).forEach((i) => {});
+  asynchronousNaturalsTo(10).forEach((i) {});
 }
-
 
 //=======================控制流==================
 
@@ -524,7 +554,7 @@ void a16() {
   //   print('$name has $yearsExperience of experience.');
   // }
   var pair = [1, 2]; //匹配两个 int  ，用is还不行，is是类型匹配，不是模式匹配
-  if (pair case [int x, int y]){
+  if (pair case [int x, int y]) {
     print(x);
   }
 
@@ -536,13 +566,12 @@ void a16() {
 
     case 'DENIED': // Empty case falls through.
     case 'CLOSED':
-      // executeClosed(); // Runs for both DENIED and CLOSED,
+    // executeClosed(); // Runs for both DENIED and CLOSED,
 
     newCase:
     case 'PENDING':
-      // executeNowClosed(); // Runs for both OPEN and PENDING.
+    // executeNowClosed(); // Runs for both OPEN and PENDING.
   }
-
 
   // token = switch (charCode) {
   //   slash || star || plus || minus => operator(charCode),
@@ -551,9 +580,7 @@ void a16() {
   //   _ => throw FormatException('Invalid')
   // };
 
-
   //A default case (default or _) covers all possible values that can flow through a switch.
-
 
   try {
     // breedMoreLlamas();
@@ -567,10 +594,4 @@ void a16() {
     // No specified type, handles all
     print('Something really unknown: $e');
   }
-
 }
-
-
-
-
-

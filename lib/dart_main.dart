@@ -3,6 +3,7 @@ import 'dart:io';
 class DartMain {
   void main() {
     //https://dart.cn/
+    //dart有点像 java+kotlin ，写法上像java，然后加了一些kotlin的特性
   }
 
   void a1() {

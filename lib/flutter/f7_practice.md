@@ -162,10 +162,15 @@ Provider是一个流行的状态管理库，它使用了Flutter的InheritedWidge
 跳转 Provider(create: (context) => entity, child: const Screen())
 var entity = Provider.of<data>(context);//initState后
 
+======路由页
+就是一个新的页面。
+一个完整的路由页可能会包含导航栏、抽屉菜单(Drawer)以及底部 Tab 导航菜单等。如果每个路由页面都需要开发者自己手动去实现这些，这会是一件非常麻烦且无聊的事
+Scaffold 是一个路由页的骨架，我们使用它可以很容易地拼装出一个完整的页面
 
-
-
-
+=======数据共享
+InheritedWidget 提供一种在 widget 树中从上到下共享数据的方式
+从下到上或者横向等。Flutter 提供了一个 ValueListenableBuilder 组件，
+跨组件共享的状态 ，Provider
 
 
 
