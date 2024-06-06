@@ -115,10 +115,111 @@ See！这在一定程度节省了我们的工作量，并且单一数据源在�
 BLoC的主要功能是将业务逻辑与UI分离，从而使得应用程序更易于维护和扩展
 其实也是后面处理业务逻辑，前方更新，解耦， 和 ChangeNotifier 那种一个作用。
 
+============网络请求后刷新ui实现的几种方法
+1.=============================FutureBuilder
+FutureBuilder(
+future: fetchSomeData(), // 这是一个返回 Future 的函数
+builder: (context, snapshot) {
+if (snapshot.connectionState == ConnectionState.waiting) {
+return CircularProgressIndicator(); // 加载中显示
+} else if (snapshot.hasError) {
+return Text('Error: ${snapshot.error}'); // 错误处理
+} else {
+return Text('Data: ${snapshot.data}'); // 显示数据
+}
+},
+)
 
 
-==========FutureBuilder
-接收一个 Future async方法，然后刷新。
+2.==========================Provider
+
+class DataModel with ChangeNotifier {
+String _data;
+
+String get data => _data;
+
+void fetchData() async {
+_data = await fetchSomeData();
+notifyListeners(); // 通知监听者数据已更新
+}
+}
+
+// 在 UI 中
+Consumer<DataModel>(
+builder: (context, model, child) {
+return Text(model.data);
+},
+)
+
+3.==================Riverpod: 这是一个相对较新的状态管理库，由 Provider 的作者开发，提供了更多的灵活性和功能。
+
+4.================setState于小型或简单的应用，你可以使用 Flutter 的基本 setState 方法来更新 UI
+void _fetchData() async {
+var data = await fetchSomeData();
+setState(() {
+_data = data;
+});
+}
+
+5 使用 Stream 和 StreamBuilder
+StreamBuilder(
+stream: streamOfData(), // 这是一个 Stream
+builder: (context, snapshot) {
+if (snapshot.connectionState == ConnectionState.waiting) {
+return CircularProgressIndicator();
+} else if (snapshot.hasError) {
+return Text('Error: ${snapshot.error}');
+} else {
+return ListView.builder(
+itemCount: snapshot.data.length,
+itemBuilder: (context, index) => ListTile(
+title: Text(snapshot.data[index]),
+),
+);
+}
+},
+)
+
+6======================= BLoC / Flutter Bloc
+
+class DataBloc extends Bloc<DataEvent, DataState> {
+DataBloc() : super(DataInitial()) {
+on<FetchData>((event, emit) async {
+emit(DataLoading());
+try {
+final data = await NetworkService.fetchData();
+emit(DataLoaded(data));
+} catch (e) {
+emit(DataError(e.toString()));
+}
+});
+}
+}
+
+// 在 UI 中使用
+BlocBuilder<DataBloc, DataState>(
+builder: (context, state) {
+if (state is DataLoading) {
+return CircularProgressIndicator();
+} else if (state is DataLoaded) {
+return Text(state.data);
+} else if (state is DataError) {
+return Text(state.message);
+}
+return Container(); // 初始状态或其他状态
+},
+)
+
+7========================GetX
+GetX 是一个轻量级的库，用于状态管理、依赖注入和路由管理。它支持响应式和非响应式状态管理。
+
+8======================Redux
+Redux 是一种流行的状态管理模式
+
+
+
+==========FutureBuilder +async 网络请求 使用方法
+接收一个 Future async 方法，然后刷新。
 @override
 Widget build(BuildContext context) {
 var entity = Provider.of<CourseListDataList>(context);
@@ -162,11 +263,80 @@ var data = CourseContentEntity.fromJson(response.data);
 }
 
 
+================ChangeNotifier  ChangeNotifierProvider Consumer 来实现网络请求
+ChangeNotifier Model 的角色
+Consumer  View的角色 Consumer监听Model发出的notify
+ChangeNotifierProvider Model和Consumer关联。
+Provider 子widget获取到Model
+   Provider.of<CounterModel>(context, listen: false).increment()
 
 
+class CounterModel extends ChangeNotifier {
+int _count = 0;
 
+    int get count => _count;
 
+    void increment() {
+        _count++;
+        notifyListeners();
+    }
+}
 
+void main() {
+runApp(
+ChangeNotifierProvider(
+create: (context) => CounterModel(),
+child: MyApp(),
+),
+);
+}
+
+class MyApp extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+return MaterialApp(
+home: CounterPage(),
+);
+}
+}
+
+class CounterPage extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+appBar: AppBar(title: Text("Counter")),
+body: Center(
+child: Consumer<CounterModel>( //======== Consumer监听CounterModel发出的notify
+builder: (context, counter, child) => Text( //=========这里传入的是一个函数，counter就是那个model，从里面获取entity，然后根据entity返回数据
+'Count: ${counter.count}',
+style: Theme.of(context).textTheme.headline4,
+),
+),
+),
+floatingActionButton: FloatingActionButton(
+onPressed: () => Provider.of<CounterModel>(context, listen: false).increment(),//========获取model,调用getData方法。
+tooltip: 'Increment',
+child: Icon(Icons.add),
+),
+);
+}
+}
+
+==============Consumer 中的方法，这就是Consumer代码，很简单，其实就是Provider.of<T>(context)
+final Widget Function(
+BuildContext context,
+T value,
+Widget? child,
+) builder;//定义了一个 builder 函数，需要你自己实现，T就是通知你的model，model中定义了entity，重新专享
+
+@override
+Widget buildWithChild(BuildContext context, Widget? child) {
+return builder(
+context,
+Provider.of<T>(context), //
+child,
+);
+}
 
 
 
