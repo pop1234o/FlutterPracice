@@ -2,10 +2,9 @@
 
 //https://docs.flutter.cn/get-started/flutter-for/android-devs android开发者的flutter指南
 flutter app 就是widget，
-
-然后你就去学习各个widget，就和Android四大组件+各种控件一样，然后各个组件属性，用法
-然后ui层就搞定了
-然后就是项目架构了，比如包目录怎么分。 项目的模式，mvvm实现。
+1.学习dart语法
+2.然后你就去学习各个widget，就和Android四大组件+各种控件一样，然后各个组件属性，用法 ，然后ui层就搞定了
+3.然后就是项目架构了，比如包目录怎么分。 项目的模式，mvvm实现。（去看看开源项目，demo，人家架构，怎么初始化，怎么网络请求渲染数据）
 异步网络请求，异步的处理，event传递刷新，
 然后去封装一些base（baseui，控件，），util（网络请求，图片请求封装，log，event）。
 然后去搞动画，事件处理，自定义组件
@@ -160,59 +159,6 @@ Widget? child,
 ) builder;
 
 定义了一个叫builder的函数变量。
-
-======FutureBuilder和Provider
-FutureBuilder和Provider是Flutter中用于不同目的的两个概念，它们在应用的状态管理和数据流处理中扮演着不同的角色。
-FutureBuilder
-
-FutureBuilder是一个Flutter的Widget，它根据与Future的交互来构建自己的UI。它主要用于异步操作，比如网络请求或数据库查询。当你有一个返回Future的异步操作，并且你想在操作完成时更新UI，FutureBuilder就非常有用。
-
-- 用途：处理单个异步操作的结果，并根据这个异步操作的状态（等待、完成、错误）来构建UI。
-- 工作方式：你提供一个Future给FutureBuilder，并提供一个builder函数。这个builder函数根据Future的状态（等待、完成、错误）返回不同的Widget。
-  Provider
-
-Provider是一个流行的状态管理库，它使用了Flutter的InheritedWidget来在Widget树中传递数据。Provider旨在使状态的管理和组件之间的通信变得更简单、更高效。
-
-- 用途：在应用的不同部分之间共享数据和状态。它不仅限于异步数据，也适用于任何需要跨多个Widget共享的数据。
-- 工作方式：你在应用的顶层提供一个状态或数据对象，然后在Widget树的任何地方，你都可以读取或监听这个状态的变化。当状态改变时，所有使用这个状态的Widget都会自动重建。
-  区别
-
-- 目的不同：FutureBuilder主要用于处理单个异步操作并根据操作结果更新UI，而Provider用于在应用的不同部分之间共享数据和状态。
-- 使用场景不同：如果你只是需要处理一个异步操作并在完成时更新UI，使用FutureBuilder就足够了。如果你需要在多个Widget之间共享数据或状态，并且希望当数据改变时能够自动更新UI，那么Provider会是更好的选择。
-- 工作原理不同：FutureBuilder依赖于Future的状态来构建UI，而Provider通过InheritedWidget在Widget树中传递和监听数据或状态的变化。
-
-总的来说，FutureBuilder和Provider服务于Flutter应用中不同的需求，它们可以单独使用，也可以结合使用来构建高效、可维护的应用。
-
-
-==========数据传递
-跳转 Provider(create: (context) => entity, child: const Screen())
-var entity = Provider.of<data>(context);//initState后
-
-======路由页
-就是一个新的页面。
-一个完整的路由页可能会包含导航栏、抽屉菜单(Drawer)以及底部 Tab 导航菜单等。如果每个路由页面都需要开发者自己手动去实现这些，这会是一件非常麻烦且无聊的事
-Scaffold 是一个路由页的骨架，我们使用它可以很容易地拼装出一个完整的页面
-
-=======数据共享
-InheritedWidget 提供一种在 widget 树中从上到下共享数据的方式
-从下到上或者横向等。Flutter 提供了一个 ValueListenableBuilder 组件，
-跨组件共享的状态 ，Provider
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

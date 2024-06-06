@@ -11,6 +11,7 @@ Element这个纽带将Widget和RenderObject关联起来
 
 每个Element都对应一个RenderObject
 
+app就是一个嵌套的巨大widget。
 
 ### UI框架
 Android SDK（View体系） =>  Android操作系统的图形渲染库（OpenGL）=> CPU => Gpu =>屏幕
