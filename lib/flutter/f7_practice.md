@@ -1,3 +1,16 @@
+
+
+//https://docs.flutter.cn/get-started/flutter-for/android-devs android开发者的flutter指南
+flutter app 就是widget，
+
+然后你就去学习各个widget，就和Android四大组件+各种控件一样，然后各个组件属性，用法
+然后ui层就搞定了
+然后就是项目架构了，比如包目录怎么分。 项目的模式，mvvm实现。
+异步网络请求，异步的处理，event传递刷新，
+然后去封装一些base（baseui，控件，），util（网络请求，图片请求封装，log，event）。
+然后去搞动画，事件处理，自定义组件
+
+
 //============tab 文字最后渐隐，是因为text设置不对导致，fade，看源码
 
 //===================居中 ：Center，Container ，Align，Row,Column
@@ -45,6 +58,7 @@
 
 //==常用布局
 
+
 1. Column 和 Row：
 - 使用场景：当你需要在垂直方向（Column）或水平方向（Row）上排列子Widget时使用。
 - 特性：可以控制子Widget的排列方式（如开始、结束、中心对齐），以及它们之间的间距。
@@ -83,6 +97,18 @@
 
 这些布局Widget是构建Flutter UI的基石，通过组合使用这些Widget，你可以实现几乎任何布局设计。
 
+======路由
+void main() {
+runApp(MaterialApp(
+home: const MyAppHome(), // Becomes the route named '/'.
+routes: <String, WidgetBuilder>{
+'/a': (context) => const MyPage(title: 'page A'),
+'/b': (context) => const MyPage(title: 'page B'),
+'/c': (context) => const MyPage(title: 'page C'),
+},
+));
+}
+Navigator.of(context).pushNamed('/b'); //或者直接push widget
 
 ====pading
 虽然Container可以完成Padding的所有工作，但Padding作为一个专一的Widget存在，
