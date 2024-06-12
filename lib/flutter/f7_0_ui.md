@@ -9,6 +9,8 @@ flutter app 就是widget，
 然后去封装一些base（baseui，控件，），util（网络请求，图片请求封装，log，event）。
 然后去搞动画，事件处理，自定义组件
 
+https://docs.flutter.cn/ui/layout/tutorial 布局示例
+
 
 //============tab 文字最后渐隐，是因为text设置不对导致，fade，看源码
 
@@ -58,15 +60,16 @@ flutter app 就是widget，
 //==常用布局
 
 
-1. Column 和 Row：
+1. Column 和 Row： linearlayout
 - 使用场景：当你需要在垂直方向（Column）或水平方向（Row）上排列子Widget时使用。
 - 特性：可以控制子Widget的排列方式（如开始、结束、中心对齐），以及它们之间的间距。
 
-2. Stack：
+2. Stack+Positioned： relativelayout
 - 使用场景：用于重叠Widget。当你需要让一个Widget覆盖在另一个Widget上时，使用Stack。
-- 特性：子Widget可以根据距离Stack边缘的距离来定位，也可以使用Positioned Widget来精确控制位置。
+- 特性：子Widget可以根据距离Stack边缘的距离来定位，也可以使用 Positioned Widget来精确控制位置。
 
-3. Container：
+
+3. Container： 
 - 使用场景：当你需要对单个Widget进行布局以及装饰（如背景色、边框、阴影等）时使用。
 - 特性：可以设置宽度、高度、边距、内边距、装饰等属性。
 
@@ -96,6 +99,9 @@ flutter app 就是widget，
 
 这些布局Widget是构建Flutter UI的基石，通过组合使用这些Widget，你可以实现几乎任何布局设计。
 
+
+
+
 ======路由
 void main() {
 runApp(MaterialApp(
@@ -113,6 +119,41 @@ Navigator.of(context).pushNamed('/b'); //或者直接push widget
 虽然Container可以完成Padding的所有工作，但Padding作为一个专一的Widget存在，
 是为了提高代码的清晰度、可读性和在某些情况下的性能。
 在实际开发中，选择使用哪一个取决于具体的需求和上下文。如果你的Widget仅需要内边距，推荐使用Padding以保持代码的简洁和明确性。
+
+======如何设置margin
+Container(
+margin: EdgeInsets.all(20.0), // 所有方向均为20.0
+child: Text('Hello World'),
+)
+
+Padding(
+padding: EdgeInsets.all(20.0), // 作为外边距
+child: Container(
+child: Text('Hello World'),
+),
+)
+
+SizedBox(
+width: 100,
+height: 100,
+child: Container(
+margin: EdgeInsets.all(10), // 内部Container的外边距
+child: Text('Hello World'),
+),
+)
+
+Row(
+children: <Widget>[
+Padding(
+padding: EdgeInsets.all(8.0),
+child: Text('Item 1'),
+),
+Padding(
+padding: EdgeInsets.all(8.0),
+child: Text('Item 2'),
+),
+],
+)
 
 ====组合控件
 控件封装起来，都继承StatelessWidget ，比如一个icon+文字，就这样自定义一个即可，  class ButtonWithText extends StatelessWidget {}

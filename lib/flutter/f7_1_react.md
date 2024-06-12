@@ -340,6 +340,99 @@ child,
 
 
 
+=============================Provider封装
+
+===================BaseModel
+import 'package:flutter/material.dart';
+class BaseModel extends ChangeNotifier {
+bool _isLoading = false;
+String _error = '';
+
+bool get isLoading => _isLoading;
+String get error => _error;
+
+void setLoading(bool loading) {
+_isLoading = loading;
+notifyListeners();
+}
+
+void setError(String error) {
+_error = error;
+notifyListeners();
+}
+
+Future<void> fetchData() async {
+try {
+setLoading(true);
+// 模拟网络请求
+await Future.delayed(Duration(seconds: 2));
+// 假设这里是你的数据处理逻辑
+setLoading(false);
+} catch (e) {
+setError(e.toString());
+setLoading(false);
+}
+}
+}
+
+
+==================BaseWidget
+class BaseWidget<T extends BaseModel> extends StatefulWidget {
+final Widget Function(BuildContext context, T model, Widget? child) builder;
+final T model;
+final Widget? child;
+
+BaseWidget({Key? key, required this.builder, required this.model, this.child}) : super(key: key);
+
+@override
+_BaseWidgetState<T> createState() => _BaseWidgetState<T>();
+}
+
+class _BaseWidgetState<T extends BaseModel> extends State<BaseWidget<T>> {
+T get model => widget.model;
+
+@override
+void initState() {
+super.initState();
+model.fetchData(); // 自动加载数据
+}
+
+@override
+Widget build(BuildContext context) {
+return ChangeNotifierProvider<T>(
+create: (context) => model,
+child: Consumer<T>(
+builder: widget.builder,
+child: widget.child,
+),
+);
+}
+}
+=======================使用
+class MyPage extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+return BaseWidget<BaseModel>(
+model: BaseModel(),
+builder: (context, model, child) {
+if (model.isLoading) {
+return CircularProgressIndicator();
+}
+if (model.error.isNotEmpty) {
+return Text('Error: ${model.error}');
+}
+return Center(
+child: Text('Data loaded successfully!'),
+);
+},
+);
+}
+}
+
+
+
+
+
 
 
 

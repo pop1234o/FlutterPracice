@@ -1,6 +1,8 @@
 //=====================类& 对象=============================
 
 // const 构造函数 和 const实例，   可以构造一个编译时常量，
+import 'package:flutter/cupertino.dart';
+
 void a17() {
   //Some classes provide constant constructors.
   // To create a compile-time constant using a constant constructor,
@@ -252,3 +254,17 @@ void handleRequest(request) {}
 //异步场景包括调用系统 API，例如非阻塞的 I/O 操作、HTTP 请求或与浏览器交互。
 // 还有一些场景是利用 Dart 的 isolate 进行计算，或等待一个计时器的触发。这些场景要么是在不同的线程运行，
 // 要么是被系统或 Dart 运行时处理，让 Dart 代码可以在计算时同步运行
+
+//===============函数类型参数的两种创建方式
+typedef Create<T> = T Function(BuildContext context);
+
+void fun(Create<Object> create) {}
+
+void fun1() {
+  //胖箭头直接创建
+  fun((context) => Object());
+  // (){} 创建函数
+  fun((context) {
+    return Object();
+  });
+}
