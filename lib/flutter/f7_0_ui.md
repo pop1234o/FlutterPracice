@@ -207,7 +207,10 @@ stless 或 stful
 
 
 
+========知识点
+Column （ Expanded（ListView） ， button)这样就是上下排列
 
-
+ListView :padding: EdgeInsets.zero,   可以置顶
+shrinkWrap: true,
 
 
