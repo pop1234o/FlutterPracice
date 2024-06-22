@@ -444,6 +444,29 @@ child: Text('Data loaded successfully!'),
    通过限制对内部变量的直接访问，你可以防止外部代码以意外的方式改变对象的内部状态，这有助于维护对象的完整性和一致性。
 
 
+==============stf widget调用 内部方法
+可以 XXWidget({Key? key}) : super(key: GlobalKey<xxState>());
+然后  (key as GlobalKey<xxState>?)?.currentState?.xx();
+
+
+
+==========================changenotifer释放
+如果你使用 Provider 来管理 ChangeNotifier，则不需要手动调用 dispose。Provider 会自动处理 ChangeNotifier 的生命周期。
+ChangeNotifierProvider(
+create: (context) => MyModel(),
+child: MyApp(),
+)
+
+如果你是new 的MyModel，没有赋值给ChangeNotifierProvider，那么就需要
+@override
+void dispose() {
+_model.dispose(); // 手动调用 dispose 方法
+super.dispose();
+}
+
+
+
+
 
 
 
