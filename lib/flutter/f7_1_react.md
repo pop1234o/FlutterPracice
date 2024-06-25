@@ -464,6 +464,23 @@ _model.dispose(); // 手动调用 dispose 方法
 super.dispose();
 }
 
+======================setState刷新问题
+StatefulWidget1-》StatefulWidget2
+StatefulWidget1刷新，StatefulWidget2 会重新走构造方法，但是不会重新initState
+StatefulWidget 的设计原则是封装自己的状态。这意味着组件的显示是基于其内部状态，而不仅仅是基于传入的参数（props）。
+如果这些内部状态没有在外部数据变化时更新，那么组件的显示不会反映这些变化。
+
+didUpdateWidget 就会被调用
+当与 State 对象关联的 StatefulWidget 接收到新的配置信息时：这通常发生在父组件重建并传递新的 props 给子组件时。
+即使是相同类型的 Widget，只要父组件传递给子组件的构造参数发生变化，didUpdateWidget 就会被调用。
+didUpdateWidget 主要用于以下几种场景：
+响应 props 的变化：如果 StatefulWidget 依赖于外部传入的数据（通过构造函数传入），并且这些数据有可能在 widget 的生命周期中发生变化，你可以在 didUpdateWidget 中根据新的 props 更新内部状态或执行其他操作。
+资源管理：如果你的 widget 依赖于一些需要手动管理的资源（如订阅、定时器、网络请求等），并且这些资源的配置依赖于外部传入的参数，你可以在 didUpdateWidget 中根据参数的变化来重新配置这些资源。
+优化性能：通过比较新旧 widget 的差异，你可以决定是否需要执行某些计算密集型的操作或资源重载，从而优化应用性能。
+
+
+
+
 
 
 
