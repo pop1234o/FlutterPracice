@@ -480,6 +480,42 @@ didUpdateWidget 主要用于以下几种场景：
 
 
 
+============Listview不让item被回收
+class KeepAliveListItem extends StatefulWidget {
+final String imageUrl;
+
+KeepAliveListItem({required this.imageUrl});
+
+@override
+_KeepAliveListItemState createState() => _KeepAliveListItemState();
+}
+
+class _KeepAliveListItemState extends State<KeepAliveListItem> with AutomaticKeepAliveClientMixin {
+@override
+Widget build(BuildContext context) {
+super.build(context); // 需要调用 super.build
+return Container(
+height: 200,
+child: CachedNetworkImage(
+imageUrl: widget.imageUrl,
+fit: BoxFit.cover,
+placeholder: (context, url) => CircularProgressIndicator(),
+errorWidget: (context, url, error) => Icon(Icons.error),
+),
+);
+}
+
+@override
+bool get wantKeepAlive => true; // 保持活跃状态，不被回收
+}
+
+
+===============列表的状态管理================
+播放状态，播放进度
+一个item，对应一个entity ，然后每个 都有个 isPlaying
+model中有个list<entity>，第一个播放记录 lastIndex
+然后点击别的item，把lastIndex停止，这个index 播放，然后刷新列表。
+ui上，判断isPlaying，如果true就播放动画，false就停止。
 
 
 
