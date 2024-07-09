@@ -214,3 +214,25 @@ ListView :padding: EdgeInsets.zero,   可以置顶
 shrinkWrap: true,
 
 
+===========屏幕适配
+设备像素比例/设备像素比（DPR
+如果一个设备的屏幕宽度为 360dp（密度无关像素），并且物理分辨率为 1080像素宽，那么 DPR 将是 3.0x
+如果屏幕宽度为 540dp，并且物理分辨率为 1080像素宽，那么 DPR 将是 2.0x（因为 1080 / 540 = 2）
+(Android一般手机的 屏幕宽度为 360dp，pad为600dp )
+
+.../my_icon.png       (mdpi baseline)
+.../1.5x/my_icon.png  (hdpi)
+.../2.0x/my_icon.png  (xhdpi)  720*1280像素手机，因为屏幕宽为360dp，所以2x
+.../3.0x/my_icon.png  (xxhdpi)  1080*1920
+.../4.0x/my_icon.png  (xxxhdpi)
+
+如 iPhone 6，虽然屏幕分辨率为 750x1334 像素，但其 DPR 为 2x，
+iPhone 14  分辨率: 2532 x 1170 像素  DPR: 3x（所以和Android差不多）
+所以设计图是750(2x)，你下载1倍的图对应的放在 2x文件夹里，0.5是1x，1.5是3x
+
+
+
+
+
+
+

@@ -171,6 +171,46 @@ color: Colors.blue,
 
 
 
+================
+The ownership chain for the RenderObject that received the incompatible parent data was:
+Semantics ← Image ← Positioned ← ClipRRect ← Stack ← Consumer<QuesPracticeResultViewModel> ← _InheritedProviderScope<QuesPracticeResultViewModel?> ← ChangeNotifierProvider<QuesPracticeResultViewModel> ← BaseConsumerView<QuesPracticeResultViewModel> ← KeyedSubtree-[GlobalKey#f5c72] ← ⋯
+When the exception was thrown, this was the stack:
+#0      RenderObjectElement._updateParentData.<anonymous closure> (package:flutter/src/widgets/framework.dart:6545:11)
+#1      RenderObjectElement._updateParentData (package:flutter/src/widgets/framework.dart:6562:6)
+#2      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:5863:15)
+#3      ParentDataElement._applyParentData.applyParentDataToChild (package:flutter/src/widgets/framework.dart:5865:9)
+#4      ParentDataElement._applyParentData (package:flutter/src/widgets/framework.dart:5869:7)
+#5      ParentDataElement.notifyClients (package:flutter/src/widgets/framework.dart:5913:5)
+#6      ProxyElement.updated (package:flutter/src/widgets/framework.dart:5826:5)
+#7      ProxyElement.update (package:flutter/src/widgets/framework.dart:5815:5)
+#8      Element.updateChild (package:flutter/src/widgets/framework.dart:3827:15)
+#9      SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:6776:14)
+#10     Element.updateChild (package:flutter/src/widgets/framework.dart:3827:15)
+#11     Element.updateChildren (package:flutter/src/widgets/framework.dart:3976:32)
+#12     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:6929:17)
+#13     Element.updateChild (package:flutter/src/widgets/framework.dart:3827:15)
+#14     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5512:16)
+#15     Element.rebuild (package:flutter/src/widgets/framework.dart:5203:7)
+#16     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:2905:19)
+#17     WidgetsBinding.drawFrame (package:flutter/src/widgets/binding.dart:1136:21)
+#18     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:443:5)
+#19     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1392:15)
+#20     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1313:9)
+#21     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1171:5)
+#22     _invoke (dart:ui/hooks.dart:312:13)
+#23     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:419:5)
+#24     _drawFrame (dart:ui/hooks.dart:283:31)
+
+您遇到的错误是由于 Positioned widget 的父 widget 不是 Stack。在 Flutter 中，Positioned widget 必须作为 Stack widget 的直接子 widget 使用，因为 Positioned 需要 Stack 来正确地定位其子 widget。
+错误信息中的 "incompatible parent data" 表示 Positioned widget 的父数据不兼容，这通常是因为它被放置在非 Stack widget 下导致的。
+要解决这个问题，请确保 Positioned widget 直接包含在一个 Stack widget 中。这里是一个简单的例子来说明如何正确使用 Positioned：
+
+
+
+
+
+
+
 
 
 
