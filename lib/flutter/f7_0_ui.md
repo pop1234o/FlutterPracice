@@ -231,6 +231,64 @@ iPhone 14  分辨率: 2532 x 1170 像素  DPR: 3x（所以和Android差不多）
 所以设计图是750(2x)，你下载1倍的图对应的放在 2x文件夹里，0.5是1x，1.5是3x
 
 
+===============list 中有pageview，然后pageview还有list 实现
+
+Widget test(){
+return Scaffold(
+appBar: AppBar(
+title: Text('Nested Scroll Example'),
+),
+body: NestedScrollView(
+headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+return <Widget>[
+SliverToBoxAdapter(
+child: Container(
+height: 200,
+color: Colors.amber,
+alignment: Alignment.center,
+child: Text('Header Section'),
+),
+),
+];
+},
+body: PageView(
+children: <Widget>[
+buildList('Page 1'),
+buildList('Page 2'),
+],
+),
+),
+);
+}
+Widget buildList(String title) {
+return ListView.builder(
+itemCount: 20,
+itemBuilder: (context, index) {
+print("itemBuilder $index");
+return ListTile(title: Text('$title Item $index'));
+},
+);
+}
+
+=================CustomScrollView SliverList 和Listview有啥区别呢？
+CustomScrollView 是一个更为复杂和灵活的滚动视图，它可以包含多种类型的滚动模型（称为 slivers），如 SliverList、SliverGrid 和 SliverAppBar 等。
+特点：
+高度可定制，可以在一个滚动视图中组合使用不同类型的 slivers。
+适用于复杂的滚动布局，如具有粘性头部、网格和列表混合的布局。
+SliverList 是 CustomScrollView 中使用的一个 sliver，它允许在 CustomScrollView 中创建列表。
+特点：
+必须在 CustomScrollView 或其他可以处理 slivers 的组件中使用。
+与 ListView 相比，SliverList 本身不包含滚动功能，滚动控制由 CustomScrollView 管理。
+
+
+
+
+
+
+
+
+
+
 
 
 

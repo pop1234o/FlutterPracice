@@ -206,11 +206,19 @@ When the exception was thrown, this was the stack:
 要解决这个问题，请确保 Positioned widget 直接包含在一个 Stack widget 中。这里是一个简单的例子来说明如何正确使用 Positioned：
 
 
+================
+package:flutter/src/rendering/box.dart':
+Failed assertion: line 2165 pos 12: 'hasSize'
 
+RenderStack#90505 relayoutBoundary=up13 NEEDS-PAINT NEEDS-COMPOSITING-BITS-UPDATE
+...    parentData: offset=Offset(0.0, 0.0); flex=null; fit=null (can use size)
+...    constraints: BoxConstraints(0.0<=w<=360.0, 0.0<=h<=Infinity)
+...    size: MISSING
 
+Stack 在 Column中要有高度，写一个固定高度
 
-
-
+==================Stack中右居中
+Stack-》Align=> Container margin
 
 
 

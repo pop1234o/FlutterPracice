@@ -478,6 +478,22 @@ didUpdateWidget 主要用于以下几种场景：
 资源管理：如果你的 widget 依赖于一些需要手动管理的资源（如订阅、定时器、网络请求等），并且这些资源的配置依赖于外部传入的参数，你可以在 didUpdateWidget 中根据参数的变化来重新配置这些资源。
 优化性能：通过比较新旧 widget 的差异，你可以决定是否需要执行某些计算密集型的操作或资源重载，从而优化应用性能。
 
+=============还是得看文档
+If the parent widget rebuilds and requests that this location in the tree update to display a new widget with the same runtimeType and Widget.key, 
+the framework will update the widget property of this State object to refer to the new widget and then call this method with the previous widget as an argument.
+
+The framework always calls build after calling didUpdateWidget, which means any calls to setState in didUpdateWidget are redundant.
+（所以不需要调用setState ，调用了鸟毛用没有）
+所有didUpdateWidget 是用来注册反注册的。还有在initState中赋值，不太行。
+In initState, subscribe to the object.
+In didUpdateWidget unsubscribe from the old object and subscribe to the new one if the updated widget configuration requires replacing the object.
+In dispose, unsubscribe from the object.
+
+
+
+调用 setState 会触发当前组件的重建（即重新调用 build 方法），但这并不意味着所有的子孙组件都会重新渲染。Flutter 的渲染机制非常高效，它会尽量避免不必要的重建和重绘。
+例如会复用const的子组件
+
 
 
 ============Listview不让item被回收
