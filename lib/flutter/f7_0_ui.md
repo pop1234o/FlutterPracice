@@ -280,9 +280,24 @@ SliverList 是 CustomScrollView 中使用的一个 sliver，它允许在 CustomS
 必须在 CustomScrollView 或其他可以处理 slivers 的组件中使用。
 与 ListView 相比，SliverList 本身不包含滚动功能，滚动控制由 CustomScrollView 管理。
 
-
-
-
+===========Row=>Expanded=>Container，我想让Container包裹内容，这个怎么实现呢
+Align包裹一下就行
+Row(
+children: [
+Expanded(
+child: Align(
+alignment: Alignment.center, // 或者您需要的其他对齐方式
+child: Container(
+color: Colors.blue, // 或其他装饰
+child: YourContent(),
+),
+),
+),
+],
+)
+=============Container =>Row让row的高度包裹内容怎么办？（现在Row宽高是外面Container的）
+Align包裹一下Row就行
+Align 组件会根据其子组件的大小来调整自身的大小，
 
 
 
